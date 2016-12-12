@@ -3,8 +3,10 @@ import Control.Monad
 
 next :: (Int, Int) -> (Int, Int) -> (Int, Int)
 next (t, a) (t', a') = (t' * r, a' * r)
-  where t'' = ceiling $ fromIntegral t / fromIntegral t'
-        a'' = ceiling $ fromIntegral a / fromIntegral a'
+  where t'' | t `mod` t' == 0 = t `div` t'
+            | otherwise = t `div` t' + 1
+        a'' | a `mod` a' == 0 = a `div` a'
+            | otherwise = a `div` a' + 1
         r = max t'' a''
 
 readLine :: String -> (Int, Int)
@@ -13,8 +15,6 @@ readLine line = (x, y)
 
 main :: IO ()
 main = do
-  x <- getLine
-  let n = read x :: Int
-  tas <- replicateM n getLine
-  let rates = fmap readLine tas
-  print $ uncurry (+) $ foldl' next (1, 1) rates
+  n <- read <$> getLine
+  ratios <- fmap readLine <$> replicateM n getLine
+  print $ uncurry (+) $ foldl' next (1, 1) ratios
