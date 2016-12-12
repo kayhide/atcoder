@@ -3,10 +3,8 @@ import Control.Monad
 
 next :: (Int, Int) -> (Int, Int) -> (Int, Int)
 next (t, a) (t', a') = (t' * r, a' * r)
-  where t'' | t `mod` t' == 0 = t `div` t'
-            | otherwise = t `div` t' + 1
-        a'' | a `mod` a' == 0 = a `div` a'
-            | otherwise = a `div` a' + 1
+  where t'' = (t + t' - 1) `div` t'
+        a'' = (a + a' - 1) `div` a'
         r = max t'' a''
 
 readLine :: String -> (Int, Int)
